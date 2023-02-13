@@ -5,7 +5,7 @@
 ## User Guide
 We deploy the latest version of the software to [https://hogwarts-legacy-save-editor.vercel.app/](https://hogwarts-legacy-save-editor.vercel.app/). You can also run the software locally by cloning this repository and running `npm run dev` or `yarn dev` in the root directory.
 
-![image](https://user-images.githubusercontent.com/8225164/218525484-bf0f46b5-40a5-49d5-b577-2770867334be.png)
+![image](https://user-images.githubusercontent.com/8225164/218548744-f7f4acba-1bd7-4f4c-a602-47ac625014ea.png)
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
