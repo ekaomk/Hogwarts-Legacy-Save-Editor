@@ -15,6 +15,7 @@ export default function RootLayout({
       */}
       <head />
       <body>{children}</body>
+      {GOOGLE_ANALYRICS_MEASUREMENT_ID && <Script async={true} src={`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ANALYRICS_MEASUREMENT_ID}`} />}
       {GOOGLE_ANALYRICS_MEASUREMENT_ID && <Script id="onRouteChange">{`
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
