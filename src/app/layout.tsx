@@ -1,7 +1,6 @@
 import './globals.css'
 import Script from 'next/script'
 import { GOOGLE_ANALYRICS_MEASUREMENT_ID } from '@/config'
-import { Analytics } from '@vercel/analytics/react';
 
 export default function RootLayout({
   children,
@@ -24,7 +23,8 @@ export default function RootLayout({
       
         gtag('config', '${GOOGLE_ANALYRICS_MEASUREMENT_ID}');
       `}</Script>}
-      <Analytics />
+
+
     </html>
   )
 }
