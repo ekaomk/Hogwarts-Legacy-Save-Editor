@@ -7,7 +7,7 @@ import { useDropzone } from 'react-dropzone'
 export function MyDropzone() {
     const [rawSaveFile, setRawSaveFile] = useState<ArrayBuffer>();
     const { dbData, writeDb } = useSave(rawSaveFile);
-    const { db, runWithPrepare } = useDB(dbData);
+    const { db, run, runWithPrepare } = useDB(dbData);
     const [miscDataDynamicQuery] = useState("SELECT DataValue FROM MiscDataDynamic WHERE DataName ='ExperiencePoints' OR DataName ='PlayerFirstName' OR DataName ='PlayerLastName' OR DataName ='BaseInventoryCapacity';");
     const [inentoryDynamicQuery] = useState("SELECT Count FROM InventoryDynamic WHERE CharacterID = 'Player0' AND ItemID = 'Knuts';");
 
@@ -68,8 +68,35 @@ export function MyDropzone() {
         await runWithPrepare(`UPDATE "InventoryDynamic" SET "Count" = :newKnutsCount WHERE "CharacterID" = "Player0" AND "ItemID" = "Knuts";`, {
             ':newKnutsCount': inputGalleons,
         });
+
         await exportSave();
-    }, [runWithPrepare, exportSave, inputFirstName, inputGalleons, inputInventorySize, inputLastName, inputXp]);
+    }, [run, exportSave, inputFirstName, inputGalleons, inputInventorySize, inputLastName, inputXp]);
+
+    const saveTheButterfliesAndExport = useCallback(async () => {
+        const commandList = [
+            `DELETE FROM "main"."EconomicExpiryDynamic" WHERE UniqueID = '6B564A7340A0AC3DCDBFD3913BFBA38A';`,
+            `DELETE FROM "main"."EconomicExpiryDynamic" WHERE UniqueID = '3C3836154F9DD64C7F89E0A62B51A77C';`,
+            `DELETE FROM "main"."EconomicExpiryDynamic" WHERE UniqueID LIKE '%.EE00792C_LootDrop';`,
+
+            `UPDATE "main"."StatsDynamic" SET Value = Value - 1 WHERE StatID = "MissionsCompleted";`,
+
+            `UPDATE "main"."StatsDynamic" SET Value = 0 WHERE StatID = "M_COM_11_ChestCollected";`,
+            `UPDATE "main"."StatsDynamic" SET Value = -1 WHERE StatID = "M_COM_11_ClemTruth";`,
+
+            `DELETE FROM "main"."MissionDynamic" WHERE MissionID = 'COM_11';`,
+            `INSERT INTO "main"."MissionDynamic" ("MissionID", "Type", "Text1", "Text2", "Text3", "Text4", "Text5", "Text6", "Integer1", "Integer2", "Integer3", "Integer4", "Integer5", "Integer6", "Integer7") VALUES ('COM_11', 'MissionEntryPoint', 'Quest', '', 'ClementineWillardsey', 'Never', 'None', '', '0', '0', '1', '0', '0', '5', '');`,
+            `INSERT INTO "main"."MissionDynamic" ("MissionID", "Type", "Text1", "Text2", "Text3", "Text4", "Text5", "Text6", "Integer1", "Integer2", "Integer3", "Integer4", "Integer5", "Integer6", "Integer7") VALUES ('COM_11', 'StepJournal', 'COM_11_ButterfliesInMyStomach_QuestAvailable_JournalRollover', '', '', '', '', '', '', '', '', '', '', '', '');`,
+            `INSERT INTO "main"."MissionDynamic" ("MissionID", "Type", "Text1", "Text2", "Text3", "Text4", "Text5", "Text6", "Integer1", "Integer2", "Integer3", "Integer4", "Integer5", "Integer6", "Integer7") VALUES ('COM_11', 'SublevelBoundary', 'M_COM_11_Intro', 'Overland', 'MEP_COM_11', '', '', '', '2500', '4000', '1', '0', '', '', '');`,
+            `INSERT INTO "main"."MissionDynamic" ("MissionID", "Type", "Text1", "Text2", "Text3", "Text4", "Text5", "Text6", "Integer1", "Integer2", "Integer3", "Integer4", "Integer5", "Integer6", "Integer7") VALUES ('COM_11', 'ScheduleOverride', 'ClementineWillardsey', 'Overland', 'COM_11_HMInside3Broomsticks', 'M_COM_11_ThreeBroomsticks', '', 'StudentApparateOut_Default', '0', '0', '', '', '', '', '');`,
+            `INSERT INTO "main"."MissionDynamic" ("MissionID", "Type", "Text1", "Text2", "Text3", "Text4", "Text5", "Text6", "Integer1", "Integer2", "Integer3", "Integer4", "Integer5", "Integer6", "Integer7") VALUES ('COM_11', 'Main', 'TalkTo-Clementine', 'PreActive', '', '', '', '', '423918', '0', '0', '0', '1', '423918', '');`,
+        ];
+
+        commandList.forEach(async (command) => {
+            await run(command);
+        });
+
+        await saveAndExport();
+    }, [run, saveAndExport, inputFirstName, inputGalleons, inputInventorySize, inputLastName, inputXp]);
 
 
     const onDrop = useCallback((acceptedFiles: any[]) => {
@@ -120,6 +147,7 @@ export function MyDropzone() {
             <input type="number" placeholder="Type here" className="input input-bordered w-full" value={inputGalleons} onChange={e => setInputGalleons(parseInt(e.target.value))} />
             {/* Save and export */}
             < button className="btn btn-primary mt-6 w-full" onClick={saveAndExport}>Save and export</button>
+            < button className="btn btn-primary mt-6 w-full" onClick={saveTheButterfliesAndExport}>Save the butterflies</button>
 
         </div>
 
