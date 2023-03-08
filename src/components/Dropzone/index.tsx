@@ -97,7 +97,14 @@ export function MyDropzone() {
 
         await saveAndExport();
     }, [run, saveAndExport, inputFirstName, inputGalleons, inputInventorySize, inputLastName, inputXp]);
+    
+    const saveTheBiscuitAndExport = useCallback(async () => {
+        command = `DELETE FROM "main"."LockableComponentsDynamic" WHERE ID like '%MoonCalfCage_0.Padlock%';`
+        
+        await run(command);
 
+        await saveAndExport();
+    }, [run, saveAndExport, inputFirstName, inputGalleons, inputInventorySize, inputLastName, inputXp]);
 
     const onDrop = useCallback((acceptedFiles: any[]) => {
         acceptedFiles.forEach((file) => {
@@ -148,6 +155,7 @@ export function MyDropzone() {
             {/* Save and export */}
             < button className="btn btn-primary mt-6 w-full" onClick={saveAndExport}>Save and export</button>
             < button className="btn btn-primary mt-6 w-full" onClick={saveTheButterfliesAndExport}>Save the butterflies</button>
+            < button className="btn btn-primary mt-6 w-full" onClick={saveTheBiscuitAndExport}>Save the Biscuit</button>
 
         </div>
 
